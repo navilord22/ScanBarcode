@@ -175,11 +175,7 @@ class _SettingPageState extends State<SettingPage> {
                       return ListView.builder(
                         itemCount: bloc.ipAddresses.value.length,
                         itemBuilder: (context, index) {
-                          // Generate a unique key for each item
-                          GlobalKey itemKey = GlobalKey();
-
                           return TextButton(
-                            key: itemKey,
                             onPressed: () async {
                               bloc.selectedIP = bloc.ipAddresses.value[index];
                               bloc.connect();

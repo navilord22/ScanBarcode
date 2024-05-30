@@ -8,7 +8,7 @@ import 'package:price_scanner_app/services/naviagation.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../vendor/network_analyzer.dart';
+import '../vendor/network_analyzer.dart';
 
 class SettingsBlocPage implements BlocBase {
   Property<List<String>> ipAddresses = Property([]);
@@ -46,10 +46,11 @@ class SettingsBlocPage implements BlocBase {
     return false;
   }
 
-  void getIpAddress() async {
+  getIpAddress() async {
     try {
       ipAddresses.value = [];
       int port = 5600;
+      //List<String> addresses = ["192.168.1.2"];
       List<String> addresses = [
         "10.2.2.2"
       ];
@@ -62,14 +63,12 @@ class SettingsBlocPage implements BlocBase {
       for (var element in addresses) {
         try {
           String subnet = element.substring(0, element.lastIndexOf("."));
+
           final stream = NetworkAnalyzer.discover2(subnet, port);
           stream.listen((NetworkAddress addr) {
             if (addr.exists) {
-              // Check if the IP address already exists in the list
-              if (!ipAddresses.value.contains(addr.ip.toString())) {
-                ipAddresses.value.add(addr.ip.toString());
-                ipAddresses.sink(ipAddresses.value);
-              }
+              ipAddresses.value.add(addr.ip.toString());
+              ipAddresses.sink(ipAddresses.value);
             }
           });
         } catch (e) {
